@@ -46,10 +46,34 @@
       li.classList.toggle("heute", (li.dataset.tag || "").toLowerCase() === heute));
   }
 
-  $("apps").innerHTML = (C.apps || []).map((a) => {
-    const kurz = esc(a.name.replace(/^ao\s*/i, "").charAt(0).toUpperCase());
-    return `<li><a href="${esc(a.url)}"${ziel}><span class="logo" style="background:${esc(a.farbe || "#FF7A00")}">ao${kurz}</span>${esc(a.name)}</a></li>`;
-  }).join("");
+  /* ---------- Google Kalender ---------- */
+  // Die Kalender-Adresse steht nicht in der öffentlichen config.js,
+  // sondern wird pro Browser einmal eingegeben und nur dort gespeichert.
+  const KAL = "kalender-adresse";
+  const lies = () => { try { return localStorage.getItem(KAL) || ""; } catch (e) { return ""; } };
+  const schreib = (v) => { try { v ? localStorage.setItem(KAL, v) : localStorage.removeItem(KAL); } catch (e) { /* egal */ } };
+  if (C.neuerTab) $("kal-oeffnen").target = "_blank";
+
+  function zeigeKalender() {
+    const box = $("kalender");
+    const ids = [...(C.kalender || []), ...lies().split(",")].map((x) => x.trim()).filter(Boolean);
+    if (!ids.length) {
+      box.innerHTML = `<form class="kal-form" id="kal-form">
+          <p>Gib einmal die E-Mail-Adresse deines Google-Kontos ein. Sie bleibt nur in diesem Browser gespeichert und landet nicht im Internet.</p>
+          <div><input type="email" id="kal-id" placeholder="name@gmail.com" required aria-label="Google-Adresse">
+          <button type="submit">Kalender anzeigen</button></div></form>`;
+      $("kal-form").addEventListener("submit", (e) => { e.preventDefault(); schreib($("kal-id").value.trim()); zeigeKalender(); });
+      return;
+    }
+    const src = ids.map((id) => "src=" + encodeURIComponent(id)).join("&");
+    const url = "https://calendar.google.com/calendar/embed?" + src +
+      "&ctz=Europe%2FBerlin&hl=de&wkst=2&mode=AGENDA&showTitle=0&showPrint=0&showCalendars=0&showTz=0&showTabs=1&showNav=1";
+    box.innerHTML = `<iframe src="${url}" title="Google Kalender" loading="lazy"></iframe>
+      ${lies() ? '<button type="button" class="kal-aendern" id="kal-aendern">Andere Adresse eingeben</button>' : ""}`;
+    const aendern = $("kal-aendern");
+    if (aendern) aendern.addEventListener("click", () => { schreib(""); zeigeKalender(); });
+  }
+  zeigeKalender();
 
   const farben = { blau: "#2F6BFF", mint: "#00C9A7", violett: "#7B3FF2", gelb: "#FFD000", pink: "#FF2E88", orange: "#FF7A00" };
   $("gruppen").innerHTML = (C.gruppen || []).map((g) =>

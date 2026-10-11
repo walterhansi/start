@@ -36,14 +36,20 @@ window.STARTSEITE = {
     training: []
   },
 
-  apps: [
-    { name: "ao timer",  url: "https://walterhansi.github.io/timer/",     farbe: "#FF7A00" },
-    { name: "ao Puls",   url: "https://walterhansi.github.io/intervals/", farbe: "#FF2E88" },
-    { name: "ao Reader", url: "https://walterhansi.github.io/ao-reader/", farbe: "#FFB000" }
-  ],
+  // Google Kalender: bleibt leer, die Adresse wird auf jedem Gerät
+  // einmal in der Kachel eingegeben (so steht sie nicht öffentlich im Netz).
+  kalender: [],
 
   // Link-Gruppen unten. farbe: blau, mint, violett, gelb, pink, orange
   gruppen: [
+    {
+      titel: "Meine Apps", farbe: "orange",
+      links: [
+        { name: "ao timer",  url: "https://walterhansi.github.io/timer/" },
+        { name: "ao Puls",   url: "https://walterhansi.github.io/intervals/" },
+        { name: "ao Reader", url: "https://walterhansi.github.io/ao-reader/" }
+      ]
+    },
     {
       titel: "Google", farbe: "blau",
       links: [
