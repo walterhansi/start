@@ -1,0 +1,260 @@
+/* Alfis Startseite – Gestaltung */
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff") format("woff");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+
+:root {
+  --papier: #F5F6FA;
+  --weiss: #FFFFFF;
+  --tinte: #16182C;
+  --tinte-2: #545872;
+  --linie: #E3E5EE;
+  --blau: #2F6BFF;
+  --pink: #FF2E88;
+  --orange: #FF7A00;
+  --gelb: #FFD000;
+  --mint: #00C9A7;
+  --violett: #7B3FF2;
+  --r-gross: 28px;
+  --r: 22px;
+  --schatten: 0 1px 0 rgba(22,24,44,.04), 0 10px 30px -18px rgba(22,24,44,.35);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--tinte);
+  font: 400 16px/1.45 "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-stretch: 100%;
+  min-height: 100vh;
+}
+h2 { margin: 0; font-size: 1.05rem; font-weight: 750; letter-spacing: -.01em; }
+p { margin: 0; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--blau); outline-offset: 3px; border-radius: 10px; }
+
+.raster {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(14px, 2.4vw, 28px);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.kachel {
+  border-radius: var(--r);
+  padding: clamp(18px, 2vw, 26px);
+  box-shadow: var(--schatten);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Begrüßung ---------- */
+.hero {
+  grid-column: span 7;
+  background: var(--weiss);
+  border-radius: var(--r-gross);
+  display: flex; flex-direction: column;
+  padding-top: clamp(22px, 2.6vw, 34px);
+}
+.streifen {
+  position: absolute; left: 0; right: 0; top: 0;
+  display: grid; grid-template-rows: repeat(5, 7px);
+}
+.streifen i:nth-child(1) { background: var(--blau); }
+.streifen i:nth-child(2) { background: var(--pink); }
+.streifen i:nth-child(3) { background: var(--tinte); }
+.streifen i:nth-child(4) { background: var(--gelb); }
+.streifen i:nth-child(5) { background: var(--mint); }
+.gruss {
+  margin-top: 34px;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  font-weight: 600;
+  color: var(--tinte-2);
+}
+.uhr {
+  font-size: clamp(5rem, 11vw, 9.5rem);
+  font-weight: 850;
+  font-stretch: 72%;
+  line-height: .9;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums;
+  margin: 6px 0 4px -4px;
+}
+.datum { font-size: 1.1rem; font-weight: 600; }
+.suche {
+  margin-top: auto;
+  padding-top: 22px;
+  display: flex; align-items: center; gap: 10px;
+}
+.suche svg {
+  position: absolute; margin-left: 18px; width: 22px; height: 22px;
+  fill: none; stroke: var(--tinte-2); stroke-width: 2.2; stroke-linecap: round;
+  pointer-events: none;
+}
+.suche input {
+  width: 100%;
+  font: inherit; font-size: 1.08rem;
+  color: var(--tinte);
+  background: var(--papier);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 15px 20px 15px 52px;
+  transition: border-color .15s, background .15s;
+}
+.suche input::placeholder { color: #8A8EA6; }
+.suche input:focus { outline: none; border-color: var(--blau); background: var(--weiss); }
+
+/* ---------- Radwetter ---------- */
+.wetter {
+  grid-column: span 5;
+  background: var(--weiss);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.wetter-kopf { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.wetter-kopf h2 span { color: var(--tinte-2); font-weight: 500; }
+.ampel {
+  font-size: .9rem; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--papier); color: var(--tinte-2);
+  white-space: nowrap;
+}
+.ampel.gut { background: var(--mint); color: var(--tinte); }
+.ampel.mittel { background: var(--gelb); color: var(--tinte); }
+.ampel.schlecht { background: var(--pink); color: #fff; }
+.ampel.dunkel { background: var(--tinte); color: #fff; }
+.wetter-jetzt { display: flex; align-items: center; gap: 22px; }
+.temp {
+  font-size: clamp(3.4rem, 5vw, 4.4rem);
+  font-weight: 850; font-stretch: 75%;
+  line-height: 1; letter-spacing: -.03em;
+}
+.werte { display: grid; grid-template-columns: repeat(2, auto); gap: 6px 22px; margin: 0; }
+.werte dt { font-size: .8rem; color: var(--tinte-2); }
+.werte dd { margin: 0; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+.pfeil { display: inline-block; color: var(--blau); font-weight: 900; transition: transform .3s; }
+.fenster { font-weight: 600; font-size: .95rem; }
+.fenster b { color: var(--blau); }
+.stunden {
+  margin-top: auto;
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px;
+  text-align: center; font-size: .72rem; font-variant-numeric: tabular-nums;
+}
+.stunden li { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.stunden .h { color: var(--tinte-2); }
+.stunden .t { font-weight: 700; font-size: .8rem; }
+.stunden .saeule {
+  width: 100%; max-width: 22px; height: 46px;
+  background: var(--papier); border-radius: 6px;
+  display: flex; align-items: flex-end; overflow: hidden;
+}
+.stunden .saeule i { display: block; width: 100%; background: var(--blau); border-radius: 6px 6px 0 0; }
+.stunden .w { color: var(--tinte-2); }
+.stunden li.ok .saeule { box-shadow: inset 0 0 0 2px var(--mint); }
+.stunden li.nacht { opacity: .45; }
+.legende { font-size: .72rem; color: var(--tinte-2); }
+
+/* ---------- Sport-Kacheln ---------- */
+.sport { grid-column: span 4; min-height: 240px; display: flex; flex-direction: column; gap: 10px; }
+.sport h2 { font-size: 1.6rem; font-weight: 850; font-stretch: 80%; letter-spacing: -.02em; margin-top: auto; }
+.illu {
+  position: absolute; right: -6px; top: 10px; width: 62%; max-width: 230px;
+  fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round;
+}
+.rennrad { background: var(--orange); color: var(--tinte); }
+.rennrad .illu { stroke: var(--tinte); }
+.rennrad .illu .voll { fill: var(--tinte); }
+.tt { background: var(--blau); color: #fff; }
+.tt .illu .belag { fill: var(--pink); stroke: #fff; stroke-width: 6; }
+.tt .illu .griff { stroke: var(--gelb); stroke-width: 16; }
+.tt .illu .ball { fill: #fff; stroke: none; }
+.tt .illu .flug { stroke: rgba(255,255,255,.55); stroke-width: 4; stroke-dasharray: 2 12; }
+
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.92); color: var(--tinte);
+  font-weight: 650; font-size: .95rem;
+  transition: transform .12s, background .12s;
+}
+.links a:hover { background: #fff; transform: translateY(-1px); }
+.fav {
+  width: 22px; height: 22px; border-radius: 6px; flex: none;
+  display: grid; place-items: center;
+  font-size: .75rem; font-weight: 800; color: #fff;
+  background: var(--tinte);
+  overflow: hidden;
+}
+.fav img { width: 18px; height: 18px; display: block; }
+.training { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.training li { display: flex; gap: 8px; }
+.training li.heute { color: var(--gelb); }
+.training li span:first-child { min-width: 92px; opacity: .8; }
+
+/* ---------- Apps ---------- */
+.apps { grid-column: span 4; background: var(--tinte); color: #fff; display: flex; flex-direction: column; gap: 14px; }
+.apps ul { display: grid; gap: 10px; margin-top: auto; }
+.apps a {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px; border-radius: 16px;
+  background: rgba(255,255,255,.06);
+  font-weight: 700; font-size: 1.05rem;
+  transition: background .12s;
+}
+.apps a:hover { background: rgba(255,255,255,.13); }
+.apps .logo {
+  width: 42px; height: 42px; border-radius: 12px; flex: none;
+  display: grid; place-items: center;
+  font-weight: 900; font-stretch: 75%; font-size: 1rem; color: var(--tinte);
+}
+
+/* ---------- Link-Gruppen ---------- */
+.gruppen {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.gruppe { background: var(--weiss); padding: 20px; }
+.gruppe h2 { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.gruppe h2::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--farbe); }
+.gruppe ul { display: grid; gap: 2px; }
+.gruppe a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; margin: 0 -10px; border-radius: 12px;
+  font-weight: 550;
+}
+.gruppe a:hover { background: color-mix(in srgb, var(--farbe) 14%, white); }
+.gruppe .fav { background: var(--farbe); }
+
+/* ---------- Responsiv ---------- */
+@media (max-width: 1080px) {
+  .hero, .wetter { grid-column: span 12; }
+  .sport, .apps { grid-column: span 6; }
+  .apps { grid-column: span 12; }
+  .apps ul { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .raster { grid-template-columns: 1fr; }
+  .hero, .wetter, .sport, .apps, .gruppen { grid-column: 1 / -1; }
+  .apps ul { grid-template-columns: 1fr; }
+  .gruppen { grid-template-columns: repeat(2, 1fr); }
+  .gruppe { padding: 16px; }
+  .gruppe a { font-size: .95rem; }
+  .gruss { margin-top: 26px; }
+  .uhr { font-size: 5.2rem; }
+  .stunden { grid-template-columns: repeat(8, 1fr); }
+  .stunden li:nth-child(n+9) { display: none; }
+  .illu { width: 55%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

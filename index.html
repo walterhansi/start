@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start</title>
+  <meta name="theme-color" content="#F5F6FA">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="fonts/archivo.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="raster">
+
+    <!-- Begrüßung, Uhr, Suche -->
+    <section class="kachel hero" aria-label="Begrüßung und Suche">
+      <div class="streifen" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="gruss" id="gruss">Hallo</p>
+      <p class="uhr" id="uhr">--:--</p>
+      <p class="datum" id="datum"></p>
+      <form class="suche" action="https://www.google.com/search" method="get" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <input name="q" type="search" placeholder="Mit Google suchen" aria-label="Mit Google suchen" autocomplete="off">
+      </form>
+    </section>
+
+    <!-- Radwetter -->
+    <section class="kachel wetter" aria-label="Radwetter">
+      <div class="wetter-kopf">
+        <h2>Radwetter <span id="ort"></span></h2>
+        <span class="ampel" id="ampel">lädt …</span>
+      </div>
+      <div class="wetter-jetzt">
+        <p class="temp" id="temp">–°</p>
+        <dl class="werte">
+          <div><dt>Wind</dt><dd><span id="windpfeil" class="pfeil" aria-hidden="true">↑</span><span id="wind">–</span></dd></div>
+          <div><dt>Böen</dt><dd id="boeen">–</dd></div>
+          <div><dt>Regen</dt><dd id="regen">–</dd></div>
+          <div><dt>Sonnenuntergang</dt><dd id="sonne">–</dd></div>
+        </dl>
+      </div>
+      <p class="fenster" id="fenster"></p>
+      <ol class="stunden" id="stunden" aria-label="Die nächsten Stunden"></ol>
+    </section>
+
+    <!-- Rennrad -->
+    <section class="kachel sport rennrad" aria-label="Rennrad">
+      <svg class="illu" viewBox="0 0 220 130" aria-hidden="true">
+        <circle cx="48" cy="88" r="36"/><circle cx="172" cy="88" r="36"/>
+        <circle cx="48" cy="88" r="4" class="voll"/><circle cx="172" cy="88" r="4" class="voll"/>
+        <path d="M48 88 92 88 76 38 152 38 172 88"/>
+        <path d="M92 88 152 38"/>
+        <path d="M76 38 70 24"/><path d="M60 22h22"/>
+        <path d="M152 38 146 22q14-6 22 4"/>
+        <circle cx="92" cy="88" r="9"/>
+      </svg>
+      <h2>Rennrad</h2>
+      <ul class="links" id="rennrad"></ul>
+    </section>
+
+    <!-- Tischtennis -->
+    <section class="kachel sport tt" aria-label="Tischtennis">
+      <svg class="illu" viewBox="0 0 220 130" aria-hidden="true">
+        <ellipse cx="118" cy="56" rx="44" ry="42" class="belag" transform="rotate(-30 118 56)"/>
+        <path d="M86 92 52 124" class="griff"/>
+        <circle cx="184" cy="34" r="12" class="ball"/>
+        <path d="M24 30q40-30 80 0" class="flug"/>
+      </svg>
+      <h2>Tischtennis</h2>
+      <ul class="training" id="training"></ul>
+      <ul class="links" id="tischtennis"></ul>
+    </section>
+
+    <!-- Eigene Apps -->
+    <section class="kachel apps" aria-label="Meine Apps">
+      <h2>Meine Apps</h2>
+      <ul id="apps"></ul>
+    </section>
+
+    <!-- Link-Gruppen -->
+    <div class="gruppen" id="gruppen"></div>
+
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
