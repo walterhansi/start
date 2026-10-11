@@ -17,9 +17,13 @@
     <!-- Begrüßung, Uhr, Suche -->
     <section class="kachel hero" aria-label="Begrüßung und Suche">
       <div class="streifen" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-      <p class="gruss" id="gruss">Hallo</p>
-      <p class="uhr" id="uhr">--:--</p>
-      <p class="datum" id="datum"></p>
+      <div class="zeit">
+        <p class="uhr" id="uhr">--:--</p>
+        <div>
+          <p class="gruss" id="gruss">Hallo</p>
+          <p class="datum" id="datum"></p>
+        </div>
+      </div>
       <form class="suche" action="https://www.google.com/search" method="get" role="search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
         <input name="q" type="search" placeholder="Mit Google suchen" aria-label="Mit Google suchen" autocomplete="off">
