@@ -143,24 +143,44 @@ a { color: inherit; text-decoration: none; }
 .pfeil { display: inline-block; color: var(--blau); font-weight: 900; transition: transform .3s; }
 .fenster { font-weight: 600; font-size: .95rem; }
 .fenster b { color: var(--blau); }
-.stunden {
+.stundenblock {
   margin-top: auto;
-  display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px;
-  text-align: center; font-size: .72rem; font-variant-numeric: tabular-nums;
+  display: flex; gap: 8px;
+  font-size: .72rem; font-variant-numeric: tabular-nums;
 }
-.stunden li { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.stunden-legende, .stunden li { display: flex; flex-direction: column; gap: 3px; }
+.stunden-legende { color: var(--tinte-2); font-weight: 600; flex: none; }
+.stunden-legende li { display: flex; align-items: center; white-space: nowrap; }
+.stunden {
+  flex: 1; min-width: 0;
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px;
+  text-align: center;
+}
+.stunden li { align-items: center; }
+.stunden .h, .stunden-legende .h { height: 16px; }
+.stunden .t, .stunden-legende .t { height: 18px; }
+.stunden .p, .stunden .c, .stunden .w,
+.stunden-legende .p, .stunden-legende .c, .stunden-legende .w { height: 16px; }
+.stunden-legende .saeule-l { height: 52px; line-height: 1.15; }
+.stunden span { display: flex; align-items: center; justify-content: center; }
 .stunden .h { color: var(--tinte-2); }
 .stunden .t { font-weight: 700; font-size: .8rem; }
 .stunden .saeule {
-  width: 100%; max-width: 22px; height: 46px;
+  position: relative;
+  width: 100%; max-width: 30px; height: 52px;
   background: var(--papier); border-radius: 6px;
-  display: flex; align-items: flex-end; overflow: hidden;
+  align-items: flex-end; overflow: hidden;
 }
-.stunden .saeule i { display: block; width: 100%; background: var(--blau); border-radius: 6px 6px 0 0; }
+.stunden .saeule i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--blau); border-radius: 6px 6px 0 0; }
+.stunden .saeule b { position: relative; align-self: flex-start; margin-top: 4px; font-size: .66rem; font-weight: 700; color: var(--tinte); }
+.stunden .saeule b.hell { color: #fff; }
+.stunden .p { color: var(--blau); font-weight: 700; }
+.stunden .c { gap: 3px; color: var(--tinte-2); }
+.wolke { display: none; }
 .stunden .w { color: var(--tinte-2); }
 .stunden li.ok .saeule { box-shadow: inset 0 0 0 2px var(--mint); }
 .stunden li.nacht { opacity: .45; }
-.legende { font-size: .72rem; color: var(--tinte-2); }
+.legende { font-size: .72rem; color: var(--tinte-2); margin-top: -6px; }
 
 /* ---------- Sport-Kacheln ---------- */
 .sport { grid-column: span 6; min-height: 240px; display: flex; flex-direction: column; gap: 10px; }
@@ -250,8 +270,8 @@ a { color: inherit; text-decoration: none; }
   .gruppe { padding: 16px; }
   .gruppe a { font-size: .95rem; }
   .uhr { font-size: 3.2rem; }
-  .stunden { grid-template-columns: repeat(8, 1fr); }
-  .stunden li:nth-child(n+9) { display: none; }
+  .stunden { grid-template-columns: repeat(7, 1fr); }
+  .stunden li:nth-child(n+8) { display: none; }
   .illu { width: 55%; }
 }
 @media (prefers-reduced-motion: reduce) {

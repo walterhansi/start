@@ -72,7 +72,7 @@
   const uhrzeit = (iso) => iso.slice(11, 16);
 
   async function ladeWetter() {
-    const speicher = "radwetter-v1";
+    const speicher = "radwetter-v2";
     let daten = null;
     try {
       const alt = JSON.parse(localStorage.getItem(speicher) || "null");
@@ -82,7 +82,7 @@
     if (!daten) {
       const url = "https://api.open-meteo.com/v1/forecast?latitude=" + ort.lat + "&longitude=" + ort.lon +
         "&current=temperature_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,is_day" +
-        "&hourly=temperature_2m,precipitation_probability,wind_speed_10m,wind_gusts_10m,is_day" +
+        "&hourly=temperature_2m,precipitation_probability,precipitation,cloud_cover,wind_speed_10m,wind_gusts_10m,is_day" +
         "&daily=sunrise,sunset&timezone=Europe%2FBerlin&forecast_days=2&wind_speed_unit=kmh";
       const antwort = await fetch(url);
       if (!antwort.ok) throw new Error("HTTP " + antwort.status);
@@ -149,20 +149,24 @@
 
     // Stundenleiste
     const li = [];
-    for (let i = start; i < Math.min(start + 12, h.time.length); i++) {
+    const ende = Math.min(start + 12, h.time.length);
+    const mengen = h.precipitation.slice(start, ende).map((m) => m || 0);
+    const skala = Math.max(2, ...mengen); // Säule voll = mindestens 2 mm
+    const mm = (m) => m >= 10 ? Math.round(m) : m.toFixed(1).replace(".", ",");
+    for (let i = start; i < ende; i++) {
       const regen = h.precipitation_probability[i] ?? 0;
+      const menge = h.precipitation[i] || 0;
+      const wolken = h.cloud_cover[i] ?? 0;
       const ok = stundeOk(h.temperature_2m[i], regen, h.wind_speed_10m[i], h.is_day[i]);
-      li.push(`<li class="${ok ? "ok" : ""} ${h.is_day[i] ? "" : "nacht"}" title="${uhrzeit(h.time[i])} Uhr: ${Math.round(h.temperature_2m[i])}°, Regen ${regen} %, Wind ${Math.round(h.wind_speed_10m[i])} km/h">
+      li.push(`<li class="${ok ? "ok" : ""} ${h.is_day[i] ? "" : "nacht"}" title="${uhrzeit(h.time[i])} Uhr: ${Math.round(h.temperature_2m[i])}°, Regen ${mm(menge)} mm (${regen} %), Wolken ${wolken} %, Wind ${Math.round(h.wind_speed_10m[i])} km/h">
         <span class="h">${h.time[i].slice(11, 13)}</span>
         <span class="t">${Math.round(h.temperature_2m[i])}°</span>
-        <span class="saeule"><i style="height:${Math.max(regen, 3)}%"></i></span>
+        <span class="saeule"><i style="height:${menge > 0 ? Math.max(menge / skala * 100, 6) : 0}%"></i><b class="${menge / skala > .8 ? "hell" : ""}">${menge > 0 ? mm(menge) : "–"}</b></span>
+        <span class="p">${regen}</span>
+        <span class="c"><span class="wolke" style="--w:${wolken}%"></span>${wolken}</span>
         <span class="w">${Math.round(h.wind_speed_10m[i])}</span></li>`);
     }
     $("stunden").innerHTML = li.join("");
-    if (!document.querySelector(".legende")) {
-      $("stunden").insertAdjacentHTML("afterend",
-        '<p class="legende">Säule = Regenwahrscheinlichkeit, Zahl unten = Wind in km/h, grüner Rand = gutes Radwetter</p>');
-    }
   }
 
   function wetterLaden() {
