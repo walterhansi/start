@@ -68,6 +68,9 @@
 
   /* ---------- Flächen 2 bis 6 ---------- */
 
+  /* Nur normale Webadressen als Link zulassen */
+  function sicher(u) { return /^https?:\/\//i.test(u || "") ? u : "#"; }
+
   function baueFlaeche(f, nr) {
     var s = el("section", "t t" + nr);
     s.setAttribute("aria-label", f.titel + (f.hinweis ? " (" + f.hinweis + ")" : ""));
@@ -81,7 +84,7 @@
       var z = el("div", "zeile");
       z.appendChild(el("span", "", l.text));
       var a = el("a", "knopf");
-      a.href = l.url;
+      a.href = sicher(l.url);
       a.setAttribute("aria-label", l.text + " öffnen");
       if (C.neuerTab) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
       var k = l.knopf || { typ: "text", inhalt: "Öffnen" };
@@ -93,6 +96,82 @@
     if (!links.length) s.appendChild(el("div", "leer", "Noch keine Links"));
     return s;
   }
+
+  function entferneFlaechen() {
+    var raster = document.getElementById("raster");
+    Array.prototype.slice.call(raster.querySelectorAll(".t:not(.t1)")).forEach(function (n) { raster.removeChild(n); });
+    return raster;
+  }
+
+  function zeigeFlaechen(flaechen) {
+    var raster = entferneFlaechen();
+    (flaechen || []).slice(0, 5).forEach(function (f, i) { raster.appendChild(baueFlaeche(f, i + 2)); });
+  }
+
+  /* ---------- Links laden (links.json) ---------- */
+
+  var LINKS_URL = "links.json";
+  var LINKS_CACHE = "start-links-v1";
+  // Frisch selbst gespeicherte Links haben so lange Vorrang vor der (evtl. noch alten) Datei von GitHub Pages
+  var EIGENE_GUELTIG = 10 * 60 * 1000;
+
+  function gueltig(d) { return !!d && Array.isArray(d.flaechen); }
+
+  function leseLinksCache() {
+    try {
+      var c = JSON.parse(localStorage.getItem(LINKS_CACHE) || "null");
+      if (c && gueltig(c.daten)) return c;
+    } catch (e) { /* egal */ }
+    return null;
+  }
+
+  function schreibeLinksCache(daten, eigen) {
+    try { localStorage.setItem(LINKS_CACHE, JSON.stringify({ zeit: Date.now(), eigen: !!eigen, daten: daten })); } catch (e) { /* egal */ }
+  }
+
+  function ladeLinks() {
+    return hole(LINKS_URL + "?v=" + Date.now()).then(function (d) {
+      if (!gueltig(d)) throw new Error("links.json unlesbar");
+      var c = leseLinksCache();
+      if (c && c.eigen && Date.now() - c.zeit < EIGENE_GUELTIG) return c.daten;
+      schreibeLinksCache(d, false);
+      return d;
+    }).catch(function (fehler) {
+      var c = leseLinksCache();
+      if (c) return c.daten;
+      throw fehler;
+    });
+  }
+
+  function zeigeLinksFehler(text) {
+    var raster = entferneFlaechen();
+    var s = el("section", "t t2");
+    var m = el("p", "meldung", "Links gerade nicht erreichbar (" + text + ").");
+    var b = el("button", "", "Neu laden");
+    b.type = "button";
+    b.addEventListener("click", startLinks);
+    m.appendChild(b);
+    s.appendChild(m);
+    raster.appendChild(s);
+  }
+
+  function startLinks() {
+    ladeLinks().then(function (d) {
+      Start.daten = d;
+      zeigeFlaechen(d.flaechen);
+    }, function (e) {
+      zeigeLinksFehler(e && e.message ? e.message : "unbekannt");
+    });
+  }
+
+  /* Schnittstelle für den Bearbeiten-Modus (editor.js) */
+  var Start = window.Start = {
+    daten: null,
+    zeichnungen: Object.keys(ZEICHNUNG),
+    zeigeFlaechen: zeigeFlaechen,
+    laden: startLinks,
+    merkeEigene: function (d) { schreibeLinksCache(d, true); Start.daten = d; }
+  };
 
   /* ---------- Wetter laden ---------- */
 
@@ -267,8 +346,7 @@
     l.addEventListener("click", function () { wetterBox.scrollBy({ left: -SPALTENBREITE * 6, behavior: "smooth" }); });
     r.addEventListener("click", function () { wetterBox.scrollBy({ left: SPALTENBREITE * 6, behavior: "smooth" }); });
 
-    var raster = document.getElementById("raster");
-    (C.flaechen || []).slice(0, 5).forEach(function (f, i) { raster.appendChild(baueFlaeche(f, i + 2)); });
+    startLinks();
 
     wetterBox.appendChild(el("p", "meldung", "Wetter lädt …"));
     tick();

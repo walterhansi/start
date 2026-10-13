@@ -1,11 +1,8 @@
 /* =========================================================
    Alfis Startseite – Einstellungen
-   Hier änderst du alles: Name, Ort, Ampel-Grenzen, Flächen und Links.
-
-   Jede Linkzeile:  { text: "Text links", url: "https://…",
-                      knopf: { typ: "text", inhalt: "Text im Knopf" } }
-   oder mit Zeichnung:  knopf: { typ: "zeichnung", inhalt: "auto" }
-   Zeichnungen: tischplatte, ball, auto
+   Hier änderst du: Name, Ort, Ampel-Grenzen und das Ziel für das Speichern.
+   Die Links der Flächen stehen in links.json und lassen sich auf der Seite
+   selbst ändern (Stift-Symbol unten rechts).
    ========================================================= */
 
 window.STARTSEITE = {
@@ -26,27 +23,6 @@ window.STARTSEITE = {
     gelb: { regenMm: 0.3, regenProzent: 30, windKmh: 25, tempUnter: 10 }
   },
 
-  // Fläche 1 (blau) ist fest: Uhr und Wetter.
-  // Flächen 2 bis 6 in der Reihenfolge der Anordnung.
-  flaechen: [
-    {
-      titel: "Tischtennis",
-      links: [
-        {
-          text: "SG Moosburg 2",
-          url: "https://www.mytischtennis.de/click-tt/ByTTV/26--27/ligen/Erwachsene_Bezirksklasse_C_Gruppe_4_ED--FS_West_(Bayerischer_TTV_-_Oberbayern-Nord)/gruppe/523835/tabelle/gesamt",
-          knopf: { typ: "text", inhalt: "clickTT" }
-        },
-        {
-          text: "SG Moosburg 3",
-          url: "https://www.mytischtennis.de/click-tt/ByTTV/26--27/ligen/Bezirksklasse_D_Gruppe_5_ED--FS_Ost/gruppe/523944/tabelle/gesamt",
-          knopf: { typ: "text", inhalt: "clickTT" }
-        }
-      ]
-    },
-    { titel: "Thema folgt", hinweis: "Fläche 3", links: [] },
-    { titel: "Thema folgt", hinweis: "Fläche 4", links: [] },
-    { titel: "Thema folgt", hinweis: "Fläche 5", links: [] },
-    { titel: "Thema folgt", hinweis: "Fläche 6", links: [] }
-  ]
+  // Wohin der Bearbeiten-Modus die Links speichert (GitHub-Repo, Datei links.json)
+  github: { besitzer: "walterhansi", repo: "start", branch: "main", datei: "links.json" }
 };

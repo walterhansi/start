@@ -4,16 +4,31 @@ Persönliche Browser-Startseite: https://walterhansi.github.io/start/
 
 Dunkle Seite mit sechs Flächen. Fläche 1 zeigt Uhr, Datum und die Wettertabelle für die nächsten 24 Stunden (Moosburg). Die Flächen 2 bis 6 tragen je ein Thema mit Links.
 
-## Ändern
+## Links ändern
 
-Alles Einstellbare steht in **`config.js`**: Name, Ort, Grenzwerte der Wetter-Ampel und die Links der Flächen. Jede Linkzeile hat einen frei wählbaren Text und eine Schaltfläche (Text im Rahmen oder eine Strichzeichnung).
+**Auf der Seite selbst:** Stift-Symbol unten rechts. Im Bearbeiten-Modus lassen sich Flächentitel und Links ändern, hinzufügen, löschen und verschieben. „Speichern“ schreibt die Datei `links.json` per GitHub-Schnittstelle ins Repo. Auf anderen Geräten ist die Änderung nach etwa einer Minute sichtbar (GitHub Pages braucht einen Moment).
+
+Einmal pro Gerät und Browser wird ein GitHub-Token abgefragt:
+
+1. GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.
+2. Repository access: nur `walterhansi/start`.
+3. Repository permissions: **Contents: Read and write**.
+4. Token kopieren und im Bearbeiten-Modus einfügen. Es liegt nur im `localStorage` dieses Browsers (nicht im Repo). „Token ändern“ in der Leiste ersetzt es.
+
+**Von Hand:** `links.json` im Repo bearbeiten. Jede Linkzeile hat `text`, `url` und `knopf` (`{ "typ": "text", "inhalt": "clickTT" }` oder `{ "typ": "zeichnung", "inhalt": "auto" }`). Zeichnungen: `tischplatte`, `ball`, `auto`. Adressen müssen mit `http://` oder `https://` beginnen.
+
+## Einstellungen
+
+In **`config.js`**: Name, Ort, Grenzwerte der Wetter-Ampel und das Speicherziel für den Bearbeiten-Modus.
 
 ## Aufbau
 
 - `index.html`, `style.css` – Seite und Design (Breiten: ab 1100 px drei Spalten, ab 600 px zwei, darunter eine)
-- `config.js` – Einstellungen und Links
+- `config.js` – Einstellungen
+- `links.json` – Flächentitel und Links
 - `logik.js` – Auswertung der Wetterdaten (Stundenzuordnung, Regendauer, Ampel)
 - `app.js` – Anzeige
+- `editor.js` – Bearbeiten-Modus (Stift, Formulare, Speichern über die GitHub-Schnittstelle)
 
 ## Wetter
 
