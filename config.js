@@ -36,6 +36,11 @@ window.STARTSEITE = {
           text: "SG Moosburg 2",
           url: "https://www.mytischtennis.de/click-tt/ByTTV/26--27/ligen/Erwachsene_Bezirksklasse_C_Gruppe_4_ED--FS_West_(Bayerischer_TTV_-_Oberbayern-Nord)/gruppe/523835/tabelle/gesamt",
           knopf: { typ: "text", inhalt: "clickTT" }
+        },
+        {
+          text: "SG Moosburg 3",
+          url: "https://www.mytischtennis.de/click-tt/ByTTV/26--27/ligen/Bezirksklasse_D_Gruppe_5_ED--FS_Ost/gruppe/523944/tabelle/gesamt",
+          knopf: { typ: "text", inhalt: "clickTT" }
         }
       ]
     },
