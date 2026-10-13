@@ -127,30 +127,18 @@
     $("windpfeil").style.transform = `rotate(${(c.wind_direction_10m + 180) % 360}deg)`;
     $("boeen").textContent = Math.round(c.wind_gusts_10m) + " km/h";
 
-    // Index der aktuellen Stunde
-    const jetzt = c.time.slice(0, 13);
+    // Index der aktuellen Stunde (nach der Uhr des Geräts, nicht nach dem Zeitstempel der Daten)
+    const n = new Date();
+    const zwei = (x) => String(x).padStart(2, "0");
+    const jetzt = `${n.getFullYear()}-${zwei(n.getMonth() + 1)}-${zwei(n.getDate())}T${zwei(n.getHours())}`;
     let start = h.time.findIndex((t) => t.slice(0, 13) === jetzt);
     if (start < 0) start = 0;
     $("regen").textContent = (h.precipitation_probability[start] ?? 0) + " %";
 
-    const heute = c.time.slice(0, 10);
+    const heute = jetzt.slice(0, 10);
     const tagIdx = d.daily.time.indexOf(heute);
     const sonnenuntergang = d.daily.sunset[tagIdx >= 0 ? tagIdx : 0];
     $("sonne").textContent = uhrzeit(sonnenuntergang) + " Uhr";
-
-    // Ampel für jetzt
-    const regenJetzt = h.precipitation_probability[start] ?? 0;
-    const ampel = $("ampel");
-    let klasse, text;
-    if (!c.is_day) { klasse = "dunkel"; text = "Dunkel draußen"; }
-    else if (stundeOk(c.temperature_2m, regenJetzt, c.wind_speed_10m, true)) { klasse = "gut"; text = "Gutes Radwetter"; }
-    else {
-      const fehler = [c.temperature_2m < grenze.minTemp - 4, regenJetzt > grenze.maxRegen + 30, c.wind_speed_10m > grenze.maxWind + 10].filter(Boolean).length;
-      klasse = fehler ? "schlecht" : "mittel";
-      text = fehler ? "Eher nicht" : "Geht so";
-    }
-    ampel.className = "ampel " + klasse;
-    ampel.textContent = text;
 
     // Bestes Zeitfenster in den nächsten 24 Stunden (mind. 2 Stunden am Stück)
     let bester = null, lauf = null;
@@ -162,6 +150,27 @@
         lauf = null;
       }
     }
+    // Ampel für jetzt – mit Grund
+    const regenJetzt = h.precipitation_probability[start] ?? 0;
+    const tempJetzt = Math.round(c.temperature_2m);
+    const gruende = [];
+    if (c.temperature_2m < grenze.minTemp) gruende.push(`Zu kalt (${tempJetzt}°)`);
+    if (regenJetzt > grenze.maxRegen) gruende.push(`Regen ${regenJetzt} %`);
+    if (c.wind_speed_10m > grenze.maxWind) gruende.push(`Wind ${Math.round(c.wind_speed_10m)} km/h`);
+    const spaeterHeute = bester && h.time[bester.von].slice(0, 10) === heute && bester.von > start;
+    const ampel = $("ampel");
+    let klasse, text;
+    if (!c.is_day) { klasse = "dunkel"; text = "Dunkel draußen"; }
+    else if (!gruende.length) { klasse = "gut"; text = "Gutes Radwetter"; }
+    else if (spaeterHeute) { klasse = "mittel"; text = `${gruende[0]}, ab ${h.time[bester.von].slice(11, 13)} Uhr gut`; }
+    else {
+      const stark = c.temperature_2m < grenze.minTemp - 4 || regenJetzt > grenze.maxRegen + 30 || c.wind_speed_10m > grenze.maxWind + 10;
+      klasse = stark ? "schlecht" : "mittel";
+      text = gruende.join(", ");
+    }
+    ampel.className = "ampel " + klasse;
+    ampel.textContent = text;
+
     const fenster = $("fenster");
     if (bester && bester.bis - bester.von >= 1) {
       const tagText = h.time[bester.von].slice(0, 10) === heute ? "Heute" : "Morgen";
