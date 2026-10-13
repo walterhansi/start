@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#131419">
+  <title>Start</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23131419'/%3E%3Crect x='8' y='8' width='26' height='26' rx='6' fill='%231F4F96'/%3E%3Crect x='38' y='8' width='18' height='26' rx='6' fill='%23C62F3B'/%3E%3Crect x='8' y='38' width='18' height='18' rx='6' fill='%23F4A81D'/%3E%3Crect x='30' y='38' width='26' height='18' rx='6' fill='%232CB5A6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="raster" id="raster">
+
+    <section class="t t1" aria-label="Uhr und Wetter">
+      <div class="kopf1">
+        <div>
+          <p class="klein" id="gruss">Hallo</p>
+          <p class="uhr" id="uhr">--:--</p>
+          <p class="klein" id="datum"></p>
+        </div>
+        <div class="nav" role="group" aria-label="Wettertabelle verschieben">
+          <button class="nb" id="links" type="button" aria-label="Nach links verschieben"></button>
+          <button class="nb" id="rechts" type="button" aria-label="Nach rechts verschieben"></button>
+        </div>
+      </div>
+      <div class="wetter" id="wetter" tabindex="0" role="region" aria-label="Wetter der nächsten 24 Stunden"></div>
+      <p class="fuss" id="fuss"></p>
+    </section>
+
+  </main>
+
+  <noscript><p class="ohnejs">Diese Seite braucht JavaScript.</p></noscript>
+  <script src="config.js"></script>
+  <script src="logik.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

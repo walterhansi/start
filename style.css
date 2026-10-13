@@ -1,0 +1,179 @@
+/* Alfis Startseite – dunkel, sechs Flächen in einer Farbwelt nach Frida Kahlo */
+
+* { box-sizing: border-box; }
+
+html { background: #131419; }
+
+body {
+  margin: 0;
+  padding: 12px;
+  min-height: 100vh;
+  background: #131419;
+  color: #fff;
+  font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.ohnejs { padding: 16px; }
+
+/* ---------- Raster: eine Spalte, zwei Spalten ab 600 px, zwölf Spalten ab 1100 px ---------- */
+
+.raster {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .raster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .t1, .t6 { grid-column: span 2; }
+}
+
+@media (min-width: 1100px) {
+  .raster { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .t1 { grid-column: span 6; }
+  .t2 { grid-column: span 3; }
+  .t3 { grid-column: span 3; }
+  .t4 { grid-column: span 3; }
+  .t5 { grid-column: span 4; }
+  .t6 { grid-column: span 5; }
+}
+
+/* ---------- Flächen ---------- */
+
+.t {
+  --f: #fff;
+  background: var(--c);
+  color: var(--f);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 230px;
+}
+
+.t1 { --c: #1F4F96; }
+.t2 { --c: #C62F3B; }
+.t3 { --c: #F4A81D; --f: #14201a; }
+.t4 { --c: #2F7D4A; }
+.t5 { --c: #C2185B; }
+.t6 { --c: #2CB5A6; --f: #14201a; }
+
+.t h2 { font-size: 16px; font-weight: 500; margin: 0; }
+
+.kopf { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.hinweis { font-size: 12px; opacity: .75; }
+
+/* ---------- Linkzeilen und Schaltflächen ---------- */
+
+.zeile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 15px;
+}
+.zeile + .zeile { border-top: 1px solid color-mix(in srgb, var(--f) 35%, transparent); }
+
+.knopf {
+  flex: none;
+  min-width: 64px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1.5px solid var(--f);
+  background: var(--c);
+  color: var(--f);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+.knopf:hover { background: var(--f); color: var(--c); }
+.knopf svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+a:focus-visible, button:focus-visible, .wetter:focus-visible {
+  outline: 2px solid var(--f);
+  outline-offset: 2px;
+}
+
+.leer {
+  margin-top: auto;
+  border: 1px dashed var(--f);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  opacity: .6;
+}
+
+/* ---------- Fläche 1: Uhr und Wetter ---------- */
+
+.kopf1 { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.klein { margin: 0; font-size: 14px; opacity: .9; }
+.uhr { margin: 0; font-size: 44px; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+.nav { display: flex; gap: 6px; }
+.nb {
+  width: 34px; height: 30px; padding: 0;
+  border-radius: 9px;
+  border: 1.5px solid var(--f);
+  background: var(--c);
+  color: var(--f);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.nb:hover { background: var(--f); color: var(--c); }
+.nb svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.wetter {
+  --tafel: color-mix(in srgb, var(--c) 75%, #000);
+  margin-top: 12px;
+  background: var(--tafel);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.meldung { margin: 0; padding: 16px; font-size: 14px; }
+.meldung button {
+  margin-left: 8px; height: 28px; padding: 0 10px; border-radius: 8px;
+  border: 1.5px solid var(--f); background: var(--tafel); color: var(--f); cursor: pointer; font: inherit; font-size: 13px;
+}
+
+table { border-collapse: separate; border-spacing: 0; font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 0; text-align: center; min-width: 54px; border-bottom: 1px solid rgba(255, 255, 255, .14); font-weight: 400; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+th.zl {
+  position: sticky; left: 0; z-index: 1;
+  background: var(--tafel);
+  text-align: left; padding: 7px 12px; min-width: 118px;
+  border-right: 1px solid rgba(255, 255, 255, .25);
+}
+thead th:not(.zl) { font-weight: 500; line-height: 1.25; }
+thead th small { display: block; font-size: 11px; font-weight: 400; opacity: .8; min-height: 14px; }
+td.jetzt, th.jetzt { background: rgba(255, 255, 255, .14); }
+td.tag, th.tag { border-left: 2px solid rgba(255, 255, 255, .55); }
+
+.pfeil { display: inline-block; width: 12px; height: 12px; margin-right: 3px; vertical-align: -1px; }
+.pfeil svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; display: block; }
+
+.am { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; color: #10231a; }
+.am svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.am.gruen { background: #41D98A; }
+.am.gelb { background: #FFD60A; }
+.am.rot { background: #FF5A4F; color: #fff; }
+.am.keine { background: rgba(255, 255, 255, .2); color: #fff; }
+
+.fuss { margin: 10px 0 0; font-size: 12px; opacity: .8; }
+.fuss a { color: inherit; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
