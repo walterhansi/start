@@ -168,6 +168,7 @@ td.tag, th.tag { border-left: 2px solid rgba(255, 255, 255, .55); }
 .am { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; color: #10231a; }
 .am svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .am.gruen { background: #41D98A; }
+.am.top { background: #0B6B35; color: #fff; box-shadow: 0 0 0 1.5px #fff; }
 .am.gelb { background: #FFD60A; }
 .am.rot { background: #FF5A4F; color: #fff; }
 .am.keine { background: rgba(255, 255, 255, .2); color: #fff; }

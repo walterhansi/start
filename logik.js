@@ -24,7 +24,15 @@
     }
     if (trifft(cfg.ampel.rot)) return "rot";
     if (trifft(cfg.ampel.gelb)) return "gelb";
-    return "gruen";
+    return istTop(s, cfg.ampelTop) ? "top" : "gruen";
+  }
+
+  /* Besonders geeignet: alle drei Werte müssen vorhanden sein und die Bedingung erfüllen. */
+  function istTop(s, t) {
+    if (!t) return false;
+    return s.sonneMin !== null && s.sonneMin >= t.sonneMinMin &&
+           s.regenMm !== null && s.regenMm <= t.regenMmMax &&
+           s.regenMin !== null && s.regenMin <= t.regenMinMax;
   }
 
   /* Minuten mit Regen in der Stunde, die bei hourly.time[i] beginnt.

@@ -269,7 +269,7 @@
 
   function ampelZelle(s) {
     var klasse = s.ampel || "keine";
-    var info = { gruen: ["gut", PFAD.gut], gelb: ["geht so", PFAD.mittel], rot: ["schlecht", PFAD.schlecht], keine: ["unbekannt", PFAD.mittel] }[klasse];
+    var info = { top: ["besonders gut", PFAD.gut], gruen: ["gut", PFAD.gut], gelb: ["geht so", PFAD.mittel], rot: ["schlecht", PFAD.schlecht], keine: ["unbekannt", PFAD.mittel] }[klasse];
     var a = el("span", "am " + klasse);
     a.setAttribute("role", "img");
     a.setAttribute("aria-label", "Eignung: " + info[0]);

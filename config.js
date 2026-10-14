@@ -23,6 +23,10 @@ window.STARTSEITE = {
     gelb: { regenMm: 0.3, regenProzent: 30, windKmh: 25, tempUnter: 10 }
   },
 
+  // „Besonders geeignet“ (dunkelgrüner Haken): nur wenn die Stunde grün ist UND
+  // Sonne mindestens so viele Minuten, Regen höchstens so viel mm, Regendauer höchstens so viele Minuten.
+  ampelTop: { sonneMinMin: 60, regenMmMax: 0, regenMinMax: 0 },
+
   // Wohin der Bearbeiten-Modus die Links speichert (GitHub-Repo, Datei links.json)
   github: { besitzer: "walterhansi", repo: "start", branch: "main", datei: "links.json" }
 };
