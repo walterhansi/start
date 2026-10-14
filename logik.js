@@ -44,6 +44,14 @@
     return bekannt === 0 ? null : n * 15;
   }
 
+  /* Sonnenscheindauer: Open-Meteo liefert Sekunden der vorangegangenen Stunde
+     (wie Niederschlag), daher gilt für die Spalte „19 Uhr“ der Eintrag 20:00. */
+  function sonneMinuten(sekunden) {
+    var v = zahl(sekunden);
+    if (v === null) return null;
+    return Math.max(0, Math.min(60, Math.round(v / 60)));
+  }
+
   function jetztAusDaten(daten) {
     if (daten.current && typeof daten.current.time === "string") return daten.current.time;
     var teile = new Intl.DateTimeFormat("sv-SE", {
@@ -79,6 +87,7 @@
         stunde: stunde,
         label: n === 0 ? "Jetzt" : (stunde === 0 ? tagKurz(zeit) : ""),
         tagWechsel: stunde === 0 && n > 0,
+        sonneMin: sonneMinuten(h.sunshine_duration && h.sunshine_duration[idx + 1]),
         wolken: zahl(h.cloud_cover && h.cloud_cover[idx]),
         temp: zahl(h.temperature_2m && h.temperature_2m[idx]),
         regenProzent: zahl(h.precipitation_probability && h.precipitation_probability[idx + 1]),
@@ -106,7 +115,7 @@
   }
 
   var api = {
-    baueSpalten: baueSpalten, ampel: ampel, regenMinuten: regenMinuten,
+    baueSpalten: baueSpalten, ampel: ampel, regenMinuten: regenMinuten, sonneMinuten: sonneMinuten,
     formatMm: formatMm, formatGanz: formatGanz, tagKurz: tagKurz
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

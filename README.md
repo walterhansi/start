@@ -34,5 +34,6 @@ In **`config.js`**: Name, Ort, Grenzwerte der Wetter-Ampel und das Speicherziel 
 
 - Daten: [Open-Meteo](https://open-meteo.com/) (CC BY 4.0), zuerst mit den ICON-Modellen des DWD, sonst Open-Meteo-Standard.
 - Regenmenge und Regenwahrscheinlichkeit gelten bei Open-Meteo für die vorangegangene Stunde. Die Spalte „19“ (19 bis 20 Uhr) zeigt deshalb den Wert mit Zeitstempel 20:00.
+- Sonne: Sonnenscheindauer in Minuten pro Stunde (Open-Meteo `sunshine_duration`, Sekunden der vorangegangenen Stunde, daher wie beim Regen der Eintrag 20:00 für die Spalte „19“). Fehlt das Feld, steht „–“.
 - Regendauer: Anzahl der Viertelstunden mit mindestens `regenSchwelle` mm Regen mal 15, daher nur 0, 15, 30, 45 oder 60 Minuten.
 - Ampel: rot gewinnt vor gelb, sonst grün. Die Regendauer zählt nicht mit.

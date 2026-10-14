@@ -34,7 +34,8 @@
     gut: "M5 12l5 5L20 7",
     mittel: "M6 12h12",
     schlecht: "M6 6l12 12M18 6L6 18",
-    pfeil: "M12 19V5M6 11l6-6 6 6"
+    pfeil: "M12 19V5M6 11l6-6 6 6",
+    sonne: "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"
   };
 
   /* Strichzeichnungen für Schaltflächen (in config.js per Name auswählbar) */
@@ -182,7 +183,7 @@
 
   function url(mitModell) {
     return BASIS + "?latitude=" + C.ort.lat + "&longitude=" + C.ort.lon +
-      "&hourly=temperature_2m,cloud_cover,precipitation_probability,precipitation,wind_speed_10m,wind_direction_10m" +
+      "&hourly=temperature_2m,cloud_cover,precipitation_probability,precipitation,wind_speed_10m,wind_direction_10m,sunshine_duration" +
       "&minutely_15=precipitation&current=temperature_2m" +
       (mitModell ? "&models=icon_seamless" : "") +
       "&timezone=Europe%2FBerlin&forecast_days=3&wind_speed_unit=kmh";
@@ -278,6 +279,7 @@
   }
 
   var ZEILEN = [
+    ["Sonne min", function (s) { return s.sonneMin === null ? "–" : String(s.sonneMin); }, PFAD.sonne],
     ["Wolken %", function (s) { return L.formatGanz(s.wolken); }],
     ["Temperatur °C", function (s) { return s.temp === null ? "–" : Math.round(s.temp) + "°"; }],
     ["Regen %", function (s) { return L.formatGanz(s.regenProzent); }],
@@ -310,8 +312,14 @@
     var koerper = el("tbody");
     ZEILEN.forEach(function (z) {
       var tr = el("tr");
-      var th = el("th", "zl", z[0]);
+      var th = el("th", "zl");
       th.scope = "row";
+      if (z[2]) {
+        var ic = el("span", "zi");
+        ic.appendChild(symbol(z[2]));
+        th.appendChild(ic);
+      }
+      th.appendChild(document.createTextNode(z[0]));
       tr.appendChild(th);
       sp.forEach(function (s, i) {
         var td = el("td", (i === 0 ? "jetzt " : "") + (s.tagWechsel ? "tag" : ""));
